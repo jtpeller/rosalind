@@ -18,11 +18,6 @@ import (
 
 var bsdata = "./problems/bsdata/"
 
-type fasta struct {
-	label string
-	dna string
-}
-
 /*
 Given: A DNA string s of length at most 1000 nt.
 Return: Four integers (separated by spaces) counting the respective #
@@ -154,11 +149,22 @@ func GC() string {
 	b := strings.Split(s, "\r\n")
 	labels := make([]string, 0)
 	dnas := make([]string, 0)
-	for _, v := range b {
-		if strings.HasPrefix(v, ">") {
+	newlabel := false
+	for i := 0; i < len(b); i++ {
+		v := b[i]
+		if !newlabel && strings.HasPrefix(v, ">") {
 			labels = append(labels, v[1:])	// get rid of the ">"
-		} else {
-			dnas = append(dnas, v)
+			newlabel = true
+		} else if newlabel {		// loop thru everything until a >
+			temp := b[i]
+			nadded := 0
+			for i+nadded+1 < len(b) && !strings.HasPrefix(b[i+nadded+1], ">") {
+				temp += b[i+nadded+1]
+				nadded++
+			}
+			dnas = append(dnas, temp)
+			i += nadded - 1
+			newlabel = false
 		}
 	}
 
