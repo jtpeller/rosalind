@@ -62,4 +62,6 @@ var stubs = map[string]interface{}{
 	"subs": prob.SUBS,
 	"fib": prob.FIB,
 	"gc": prob.GC,
+	"hamm": prob.HAMM,
+	"iprb": prob.IPRB,
 }

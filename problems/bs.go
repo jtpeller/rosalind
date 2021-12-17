@@ -194,3 +194,80 @@ func gccontent(dna string) float64 {
 	}
 	return gc/total
 }
+
+/*
+Given: Two DNA strings s and t of equal length (not exceeding 1 kbp).
+Return: The Hamming distance dH(s,t)
+*/
+func HAMM() string {
+	// parse input
+	s := utils.GetInput(bsdata + "rosalind_hamm.txt")
+	t := strings.Split(s, "\r\n")
+	s1 := t[0]
+	s2 := t[1]
+	
+	// compute
+	dist := 0
+	if len(s1) != len(s2) {
+		panic("strings are of unequal length")
+	}
+	for i := range s1 {
+		if s1[i] != s2[i] {
+			dist++
+		}
+	}
+
+	// assemble
+	out := fmt.Sprintf("%d", dist)
+	return out
+}
+
+/*
+Given: Three positive integers k, m, and n, representing a population
+containing k+m+n organisms: k individuals are homozygous dominant for
+a factor, m are heterozygous, and n are homozygous recessive.
+Return: The probability that two randomly selected mating organisms
+will produce an individual possessing a dominant allele (and thus
+displaying the dominant phenotype). Assume that any two organisms
+can mate.
+*/
+func IPRB() string {
+	s := utils.GetInput(bsdata + "rosalind_iprb.txt")
+	s = utils.RemoveNewline(s)
+	t := strings.Split(s, " ")
+	if len(t) != 3 {
+		panic("something bad happened")
+	}
+	k, _ := strconv.ParseInt(t[0], 10, 64)	// homozygous dominant
+	m, _ := strconv.ParseInt(t[1], 10, 64)	// heterozygous
+	n, _ := strconv.ParseInt(t[2], 10, 64)	// homozygous recessive
+
+	total := k+m+n		// total population
+
+	// convert to floats
+	kf := float64(k)
+	mf := float64(m)
+	nf := float64(n)
+	tf := float64(total)
+
+	// homozygous dominant
+	popk := kf/tf
+
+	// heterozygous
+	popm := mf/tf
+	h1d2 := popm * (kf/(tf-1))
+	h1h2 := popm * ((mf-1)/(tf-1))*0.75
+	h1r2 := popm * (nf/(tf-1))*0.5
+	h1 := h1d2 + h1h2 + h1r2
+
+	// homozygous
+	popn := nf/tf
+	r1d2 := popn * (kf/(tf-1))
+	r1h2 := popn * (mf/(tf-1))*0.5
+	r1 := r1d2 + r1h2
+
+	// build output 
+	prob := popk + h1 + r1
+	out := fmt.Sprintf("%.5f", prob)
+	return out
+}
