@@ -21,7 +21,7 @@ import (
 func GetInput(filename string) string {
 	// read in the file & format the string
 	dat, err := ioutil.ReadFile(filename)
-	HandleError(err)		// ensure no errors
+	HandleError(err) // ensure no errors
 	s := string(dat)
 	return s
 }
@@ -29,22 +29,21 @@ func GetInput(filename string) string {
 // grabs and returns the raw input
 func GetRaw(filename string) []byte {
 	dat, err := ioutil.ReadFile(filename)
-	HandleError(err)	// ensure no errors
+	HandleError(err) // ensure no errors
 	return dat
 }
 
 // parses a string in fasta format
 
-
 // ############################ CONSTANTS ##############################
 // ### this section holds all constants needed.
 const (
-	black = "\u001b[30m"
-	red = "\u001b[31m"
+	black  = "\u001b[30m"
+	red    = "\u001b[31m"
 	yellow = "\u001b[33m"
-	green = "\u001b[32m"
-	blue = "\u001b[34m"
-	reset = "\u001b[0m"
+	green  = "\u001b[32m"
+	blue   = "\u001b[34m"
+	reset  = "\u001b[0m"
 )
 
 // ############################ ERRORS #################################

@@ -10,7 +10,7 @@ package problems
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"rosalind/utils"
 	"strconv"
 	"strings"
@@ -48,7 +48,6 @@ func DNA() string {
 	return str
 }
 
-
 /*
 Given: A DNA string t having length at most 1000 nt.
 Return: The transcribed RNA string of t.
@@ -65,7 +64,7 @@ Return: The reverse complement s^c of s.
 */
 func REVC() string {
 	// read in the file & format the string
-	dat, err := ioutil.ReadFile(bsdata + "rosalind_revc.txt")
+	dat, err := os.ReadFile(bsdata + "rosalind_revc.txt")
 	utils.HandleError(err)
 	buff := bytes.NewBufferString("")
 	dat = dat[:len(dat)-1]
@@ -81,18 +80,18 @@ func REVC() string {
 }
 
 /*
- Given: Two DNA strings s and t (each of length at most 1 kbp).
- Return: All locations of t as a substring of s.
+Given: Two DNA strings s and t (each of length at most 1 kbp).
+Return: All locations of t as a substring of s.
 */
 func SUBS() string {
 	// read in the file & format the string
-	dat, err := ioutil.ReadFile(bsdata + "rosalind_subs.txt")
+	dat, err := os.ReadFile(bsdata + "rosalind_subs.txt")
 	utils.HandleError(err)
 	s := string(dat)
 	input := strings.Split(s, "\r\n")
 
-	text := input[0]			// grab the original string
-	pattern := input[1] 		// grab the pattern
+	text := input[0]    // grab the original string
+	pattern := input[1] // grab the pattern
 
 	// run algorithm and output
 	z := utils.Zalgo(text, pattern)
@@ -133,13 +132,14 @@ func rabbits(mo, off int64) int64 {
 	if mo <= 4 {
 		return gen1 + gen2
 	}
-	return gen1 + gen2 * off
+	return gen1 + gen2*off
 }
 
 /*
 Given: At most 10 DNA strings in FASTA format (of length at most 1 kbp each).
-Return: The ID of the string having the highest GC-content, followed by the 
-	GC-content of that string. Rosalind allows for a default error of 0.001 in 
+Return: The ID of the string having the highest GC-content, followed by the
+
+	GC-content of that string. Rosalind allows for a default error of 0.001 in
 	all decimal answers unless otherwise stated; please see the note on absolute
 	error below.
 */
@@ -153,9 +153,9 @@ func GC() string {
 	for i := 0; i < len(b); i++ {
 		v := b[i]
 		if !newlabel && strings.HasPrefix(v, ">") {
-			labels = append(labels, v[1:])	// get rid of the ">"
+			labels = append(labels, v[1:]) // get rid of the ">"
 			newlabel = true
-		} else if newlabel {		// loop thru everything until a >
+		} else if newlabel { // loop thru everything until a >
 			temp := b[i]
 			nadded := 0
 			for i+nadded+1 < len(b) && !strings.HasPrefix(b[i+nadded+1], ">") {
@@ -192,7 +192,7 @@ func gccontent(dna string) float64 {
 			gc++
 		}
 	}
-	return gc/total
+	return gc / total
 }
 
 /*
@@ -205,7 +205,7 @@ func HAMM() string {
 	t := strings.Split(s, "\r\n")
 	s1 := t[0]
 	s2 := t[1]
-	
+
 	// compute
 	dist := 0
 	if len(s1) != len(s2) {
@@ -238,11 +238,11 @@ func IPRB() string {
 	if len(t) != 3 {
 		panic("something bad happened")
 	}
-	k, _ := strconv.ParseInt(t[0], 10, 64)	// homozygous dominant
-	m, _ := strconv.ParseInt(t[1], 10, 64)	// heterozygous
-	n, _ := strconv.ParseInt(t[2], 10, 64)	// homozygous recessive
+	k, _ := strconv.ParseInt(t[0], 10, 64) // homozygous dominant
+	m, _ := strconv.ParseInt(t[1], 10, 64) // heterozygous
+	n, _ := strconv.ParseInt(t[2], 10, 64) // homozygous recessive
 
-	total := k+m+n		// total population
+	total := k + m + n // total population
 
 	// convert to floats
 	kf := float64(k)
@@ -251,22 +251,22 @@ func IPRB() string {
 	tf := float64(total)
 
 	// homozygous dominant
-	popk := kf/tf
+	popk := kf / tf
 
 	// heterozygous
-	popm := mf/tf
-	h1d2 := popm * (kf/(tf-1))
-	h1h2 := popm * ((mf-1)/(tf-1))*0.75
-	h1r2 := popm * (nf/(tf-1))*0.5
+	popm := mf / tf
+	h1d2 := popm * (kf / (tf - 1))
+	h1h2 := popm * ((mf - 1) / (tf - 1)) * 0.75
+	h1r2 := popm * (nf / (tf - 1)) * 0.5
 	h1 := h1d2 + h1h2 + h1r2
 
 	// homozygous
-	popn := nf/tf
-	r1d2 := popn * (kf/(tf-1))
-	r1h2 := popn * (mf/(tf-1))*0.5
+	popn := nf / tf
+	r1d2 := popn * (kf / (tf - 1))
+	r1h2 := popn * (mf / (tf - 1)) * 0.5
 	r1 := r1d2 + r1h2
 
-	// build output 
+	// build output
 	prob := popk + h1 + r1
 	out := fmt.Sprintf("%.5f", prob)
 	return out

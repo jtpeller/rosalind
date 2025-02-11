@@ -17,19 +17,18 @@ import (
 	"rosalind/utils"
 )
 
-
 func main() {
 	// program initialization (flags)
 	id := flag.String("id", "", "which problem to run. Example: -id dna")
 	comptime := flag.Bool("t", false, "True if you want approximate time-of-computation information printed. False otherwise")
-	
-	flag.Parse()		// remember to parse!
+
+	flag.Parse() // remember to parse!
 
 	_, exists := stubs[*id]
 
-	if *id == "" {				// user must specify a problem to run
+	if *id == "" { // user must specify a problem to run
 		utils.HandleError(errors.New("you need to specify a problem to run! "))
-	} else if !exists {				// user must specify a sequence that exists
+	} else if !exists { // user must specify a sequence that exists
 		utils.HandleError(errors.New("either this sequence has not been implemented yet, or your id is invalid! "))
 	}
 
@@ -56,12 +55,12 @@ func call(name string) string {
 // the following is a (large) mapping from strings to the corresponding function
 var stubs = map[string]interface{}{
 	// bio_stronghold
-	"dna": prob.DNA,
-	"rna": prob.RNA,
+	"dna":  prob.DNA,
+	"rna":  prob.RNA,
 	"revc": prob.REVC,
 	"subs": prob.SUBS,
-	"fib": prob.FIB,
-	"gc": prob.GC,
+	"fib":  prob.FIB,
+	"gc":   prob.GC,
 	"hamm": prob.HAMM,
 	"iprb": prob.IPRB,
 }

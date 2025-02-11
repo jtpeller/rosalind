@@ -13,7 +13,7 @@ func RemoveNewline(s string) string {
 
 func Reverse(str string) string {
 	bytes := []rune(str)
-	for i, j := 0, len(bytes) - 1; i < j; i,j = i+1, j-1 {
+	for i, j := 0, len(bytes)-1; i < j; i, j = i+1, j-1 {
 		bytes[i], bytes[j] = bytes[j], bytes[i]
 	}
 	return string(bytes)
@@ -46,7 +46,7 @@ func Zalgo(text string, pattern string) []int {
 	R := 0
 	k := 0
 
-	for i := 1; i < l; i++ {		// loop thru length of concat
+	for i := 1; i < l; i++ { // loop thru length of concat
 		if i > R {
 			L, R = i, i
 			for R < l && concat[R-L] == concat[R] {
@@ -55,10 +55,10 @@ func Zalgo(text string, pattern string) []int {
 			Z[i] = R - L
 			R--
 		} else {
-			k = i - L 				// idx which matches in [L,R] interval
-			if Z[k] < R - i + 1 {
+			k = i - L // idx which matches in [L,R] interval
+			if Z[k] < R-i+1 {
 				Z[i] = Z[k]
-			} else { 				// start from R and check manually
+			} else { // start from R and check manually
 				L = i
 				for R < l && concat[R-L] == concat[R] {
 					R++
